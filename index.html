@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploader un fichier</title>
+</head>
+<body>
+    <form enctype="multipart/form-data">
+        <input type="text" name="name" id="name">
+        <input type="file" name="image" id="image">
+        <button type="submit">Envoyer</button>
+    </form>
+</body>
+<script>
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit",async (e)=>{
+        e.preventDefault();
+        
+        // Pour l'envoi de fichier je n'utilise pas le format JSON 
+        // mais FormData()
+        const formData = new FormData(form);
+
+        const data = await fetch("http://localhost:3008/upload",{
+            method : "post",
+            body : formData // Je passe les données FormData en body
+        }).then(res=>res.json());
+
+        const img = document.createElement("img");
+        
+        img.setAttribute("src",data.url);
+
+        document.body.appendChild(img);
+    });
+</script>
+</html>
